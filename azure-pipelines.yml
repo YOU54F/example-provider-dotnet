@@ -40,7 +40,7 @@ steps:
       broker can-i-deploy \
         --pacticipant ${PACTICIPANT} \
         --version ${GIT_COMMIT} \
-        --to prod
+        --to-environment production
   displayName: 🎛  Can I deploy?
   env:
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
@@ -56,10 +56,10 @@ steps:
       -v ${PWD}:${PWD} \
       -e PACT_BROKER_BASE_URL \
       -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest \
-      broker create-version-tag \
+      broker record_deployment \
           --pacticipant ${PACTICIPANT} \
           --version ${GIT_COMMIT} \
-          --tag prod
+          --environment production
   displayName: 🚀  Deploy
   env:
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
