@@ -61,7 +61,9 @@ public class ProviderApiTests : IDisposable
         string pactFile = Environment.GetEnvironmentVariable("PACT_FILE");
         string version = Environment.GetEnvironmentVariable("GIT_COMMIT");
         string branch = Environment.GetEnvironmentVariable("GIT_BRANCH");
-        string buildUri = $"{Environment.GetEnvironmentVariable("GITHUB_SERVER_URL")}/{Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")}/actions/runs/{Environment.GetEnvironmentVariable("GITHUB_RUN_ID")}";
+        string buildUri = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("BUILD_URI"))
+                    ? Environment.GetEnvironmentVariable("BUILD_URI")
+                    : $"{Environment.GetEnvironmentVariable("GITHUB_SERVER_URL")}/{Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")}/actions/runs/{Environment.GetEnvironmentVariable("GITHUB_RUN_ID")}";
 
 
         if (pactFile != "" && pactFile != null)

@@ -31,6 +31,7 @@ steps:
     GIT_COMMIT: $(Build.SourceVersion)
     GIT_BRANCH: $(Build.SourceBranchName)
     PACTICIPANT: "pactflow-example-provider-dotnet"
+    BUILD_URI: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
 - script: |
     docker run \
       --rm \
