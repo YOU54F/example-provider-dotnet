@@ -29,3 +29,5 @@ steps:
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true  
+    GIT_COMMIT: $(Build.SourceVersion)
+    GIT_BRANCH: $(Build.SourceBranchName)
