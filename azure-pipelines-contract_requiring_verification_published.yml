@@ -1,0 +1,26 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+# trigger:
+# - master
+
+# parameters:
+# - name: PACT_WEBHOOK_URL
+#   type: string
+# - name: PACT_WEBHOOK_GIT_COMMIT
+#   type: string
+# - name: PACT_WEBHOOK_GIT_BRANCH
+#   type: string
+# - name: PACT_WEBHOOK_DESCRIPTION
+#   type: string
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+# - checkout: self@PACT_WEBHOOK_GIT_COMMIT
+
+- script: make ci_webhook
+  displayName: ✅  Run tests
