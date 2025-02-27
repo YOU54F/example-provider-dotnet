@@ -21,6 +21,14 @@ pool:
 
 steps:
 # - checkout: self@PACT_WEBHOOK_GIT_COMMIT
+- script: |
+    echo $GIT_COMMIT
+    echo $GIT_BRANCH
+  displayName: Check vars
+  env:
+    GIT_COMMIT: $(Build.SourceVersion)
+    GIT_BRANCH: $(Build.SourceBranchName)
+
 
 - script: make ci_webhook
   displayName: ✅  Run tests
