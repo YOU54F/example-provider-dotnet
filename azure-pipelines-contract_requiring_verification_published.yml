@@ -3,24 +3,19 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-# trigger:
-# - master
+trigger: none
 
 parameters:
 - name: PACT_URL
   type: string
-# - name: PACT_WEBHOOK_GIT_COMMIT
-#   type: string
-# - name: PACT_WEBHOOK_GIT_BRANCH
-#   type: string
-# - name: PACT_WEBHOOK_DESCRIPTION
-#   type: string
+- name: PACT_WEBHOOK_MESSAGE
+  type: string
+  default: "Run tests"
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-# - checkout: self@PACT_WEBHOOK_GIT_COMMIT
 - script: |
     echo $GIT_COMMIT
     echo $GIT_BRANCH
@@ -29,9 +24,8 @@ steps:
     GIT_COMMIT: $(Build.SourceVersion)
     GIT_BRANCH: $(Build.SourceBranchName)
 
-
 - script: make ci_webhook
-  displayName: ✅  Run tests
+  displayName: ✅ ${parameters.PACT_WEBHOOK_MESSAGE}
   env:
     PACT_URL: ${parameters.PACT_URL}
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
