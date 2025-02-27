@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "repositories": {
+          "self": {
+            "refName": "${pactbroker.providerVersionBranch}",
+            "version": "${pactbroker.providerVersionNumber}"
+          }
+        }
+      },
+    "templateParameters": {
+        "PACT_URL": "${pactbroker.pactUrl}",
+        "PACT_WEBHOOK_MESSAGE": "Verify changed pact for ${pactbroker.consumerName} version ${pactbroker.consumerVersionNumber} branch ${pactbroker.consumerVersionBranch} by ${pactbroker.providerVersionNumber} (${pactbroker.providerVersionDescriptions})"
+    }
+}
