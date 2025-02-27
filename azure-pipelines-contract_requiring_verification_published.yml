@@ -20,7 +20,7 @@ steps:
 - script: make ci_webhook
   displayName: '✅ ${{parameters.PACT_WEBHOOK_MESSAGE}}'
   env:
-    PACT_URL: ${parameters.PACT_URL}
+    PACT_URL: '${{parameters.PACT_URL}}'
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true  
