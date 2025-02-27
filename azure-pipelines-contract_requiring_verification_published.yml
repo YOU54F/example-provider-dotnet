@@ -19,13 +19,15 @@ steps:
 - script: |
     echo $GIT_COMMIT
     echo $GIT_BRANCH
+    echo ${parameters.PACT_URL}
+    echo ${parameters.PACT_WEBHOOK_MESSAGE}
   displayName: Check vars
   env:
     GIT_COMMIT: $(Build.SourceVersion)
     GIT_BRANCH: $(Build.SourceBranchName)
 
 - script: make ci_webhook
-  displayName: ✅ ${parameters.PACT_WEBHOOK_MESSAGE}
+  displayName: '✅ ${{parameters.PACT_WEBHOOK_MESSAGE}}'
   env:
     PACT_URL: ${parameters.PACT_URL}
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
