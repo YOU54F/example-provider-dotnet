@@ -26,3 +26,4 @@ steps:
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true  
     GIT_COMMIT: $(Build.SourceVersion)
     GIT_BRANCH: $(Build.SourceBranchName)
+    BUILD_URI: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
