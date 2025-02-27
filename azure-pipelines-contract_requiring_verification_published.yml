@@ -6,9 +6,9 @@
 # trigger:
 # - master
 
-# parameters:
-# - name: PACT_WEBHOOK_URL
-#   type: string
+parameters:
+- name: PACT_URL
+  type: string
 # - name: PACT_WEBHOOK_GIT_COMMIT
 #   type: string
 # - name: PACT_WEBHOOK_GIT_BRANCH
@@ -33,7 +33,7 @@ steps:
 - script: make ci_webhook
   displayName: ✅  Run tests
   env:
-    PACT_URL: https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-dotnet/consumer/pactflow-example-consumer-dotnet/version/0341c650fd4e0ca1b00f7c67222e95521e387075
+    PACT_URL: ${parameters.PACT_URL}
     PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true  
