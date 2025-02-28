@@ -8,7 +8,7 @@ resources:
   repositories:
     - repository: pact_templates
       type: github
-      name: you54f/example-consumer-dotnet
+      name: YOU54F/example-consumer-dotnet
       ref: refs/head/templates
 
 variables:
