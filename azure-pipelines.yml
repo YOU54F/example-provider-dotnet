@@ -1,10 +1,20 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# Pact provider workflow - dynamically fetches pacts, based on consumer version selectors
+# Test (verify pacts) -> Publish verification results -> Can-I-Deploy to Prod -> Record Deployment (master branch)
 
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  - name: PACTICIPANT
+    value: "pactflow-example-provider-dotnet"
+  - name: PACT_BROKER_BASE_URL
+    value: https://testdemo.pactflow.io
+  - name: GIT_BRANCH
+    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
+  - name: GIT_COMMIT
+    value: $(Build.SourceVersion)
+  - name: BUILD_URI
+    value: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
 
 steps:
 - script: |
@@ -18,13 +28,9 @@ steps:
     dotnet test tests
   displayName: ✅  Test
   env:
-    PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
-    GIT_COMMIT: $(Build.SourceVersion)
-    GIT_BRANCH: $(Build.SourceBranchName)
-    PACTICIPANT: "pactflow-example-provider-dotnet"
-    BUILD_URI: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
+
 - script: |
     docker run \
       --rm \
@@ -37,12 +43,7 @@ steps:
         --to-environment production
   displayName: 🎛  Can I deploy?
   env:
-    PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
-    PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
-    GIT_COMMIT: $(Build.SourceVersion)
-    GIT_BRANCH: $(Build.SourceBranchName)
-    PACTICIPANT: "pactflow-example-provider-dotnet"
 
 - script: |
     docker run \
@@ -56,9 +57,4 @@ steps:
           --environment production
   displayName: 🚀  Deploy
   env:
-    PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
-    PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
-    GIT_COMMIT: $(Build.SourceVersion)
-    GIT_BRANCH: $(Build.SourceBranchName)
-    PACTICIPANT: "pactflow-example-provider-dotnet"

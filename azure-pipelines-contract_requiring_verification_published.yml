@@ -1,7 +1,7 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# Pact provider workflow - uses `contract_requiring_verification_published` webhook event, to trigger verifications by
+#  pact url. Multiple webhooks will be fired, for mainBranch/deployed/released versions of provider across any environment.
+#
+# Receive incoming webhook trigger from Broker -> Checkout required git commit from webhook -> Pass pact url to test -> Test (verify pact) -> Publish verification results
 
 trigger: none
 
@@ -12,6 +12,18 @@ parameters:
   type: string
   default: "Run tests"
 
+variables:
+  - name: PACTICIPANT
+    value: "pactflow-example-provider-dotnet"
+  - name: PACT_BROKER_BASE_URL
+    value: https://testdemo.pactflow.io
+  - name: GIT_BRANCH
+    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
+  - name: GIT_COMMIT
+    value: $(Build.SourceVersion)
+  - name: BUILD_URI
+    value: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
+
 pool:
   vmImage: ubuntu-latest
 
@@ -21,9 +33,5 @@ steps:
   displayName: '✅ ${{parameters.PACT_WEBHOOK_MESSAGE}}'
   env:
     PACT_URL: '${{parameters.PACT_URL}}'
-    PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true  
-    GIT_COMMIT: $(Build.SourceVersion)
-    GIT_BRANCH: $(Build.SourceBranchName)
-    BUILD_URI: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
