@@ -6,7 +6,7 @@ pool:
 
 resources:
   repositories:
-    - repository: pact_templates
+    - repository: templates
       type: github
       name: you54f/example-consumer-dotnet
       ref: refs/heads/templates
@@ -16,7 +16,7 @@ variables:
     value: "pactflow-example-provider-dotnet"
   - name: PACT_BROKER_BASE_URL
     value: https://testdemo.pactflow.io
-  - template: templates/azure_pact_variables.yml@pact_templates
+  - template: templates/azure_pact_variables.yml@templates
   # - name: GIT_BRANCH
   #   value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
   # - name: GIT_COMMIT
@@ -42,12 +42,12 @@ steps:
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
 
-- template: templates/azure_pact_can_i_deploy_with_params.yml@pact_templates
+- template: templates/azure_pact_can_i_deploy_with_params.yml@templates
   parameters:
     to_environment: production
     application_name: $(PACTICIPANT)
     token: $(PACT_BROKER_TOKEN)
-- template: templates/azure_pact_record_deployment_with_params.yml@pact_templates
+- template: templates/azure_pact_record_deployment_with_params.yml@templates
   parameters:
     environment: production
     application_name: $(PACTICIPANT)
