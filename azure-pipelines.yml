@@ -24,12 +24,15 @@ steps:
     dotnet restore src
     dotnet restore tests
   displayName: 📦  Restore
+  workingDirectory: example-provider-dotnet
 - script: |
     dotnet run --project src &
   displayName: 🏁  Start Provider
+  workingDirectory: example-provider-dotnet
 - script: |
     dotnet test tests
   displayName: ✅  Test
+  workingDirectory: example-provider-dotnet
   env:
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
