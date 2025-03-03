@@ -20,6 +20,7 @@ variables:
   - template: templates/azure_pact_variables.yml@pact_templates
 
 steps:
+- checkout: self
 - script: |
     dotnet restore src
     dotnet restore tests
