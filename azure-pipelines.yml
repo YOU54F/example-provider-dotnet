@@ -34,6 +34,8 @@ steps:
   env:
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
+    GIT_BRANCH: $(BRANCH)
+    GIT_COMMIT: $(COMMIT)
 
 - template: templates/azure_pact_can_i_deploy.yml@pact_templates
   parameters:
