@@ -6,25 +6,18 @@ pool:
 
 resources:
   repositories:
-    - repository: templates
+    - repository: pact_templates
       type: github
-      name: you54f/example-consumer-dotnet
-      ref: refs/heads/templates
+      name: you54f/azure-pipelines-templates
+      endpoint: azure-templates-pact-github # azure service connection to allow read-only access to github repo
+      # ref: refs/heads/templates # point to a commit / branch / tag
 
 variables:
   - name: PACTICIPANT
     value: "pactflow-example-provider-dotnet"
   - name: PACT_BROKER_BASE_URL
     value: https://testdemo.pactflow.io
-  - template: templates/azure_pact_variables.yml@templates
-  # - name: GIT_BRANCH
-  #   value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
-  # - name: GIT_COMMIT
-  #   value: $(Build.SourceVersion)
-  # - name: BUILD_URI
-  #   value: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
-
-
+  - template: templates/azure_pact_variables.yml@pact_templates
 
 steps:
 - script: printenv
@@ -42,43 +35,14 @@ steps:
     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
     PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
 
-- template: templates/azure_pact_can_i_deploy_with_params.yml@templates
+- template: templates/azure_pact_can_i_deploy.yml@pact_templates
   parameters:
     to_environment: production
     application_name: $(PACTICIPANT)
     token: $(PACT_BROKER_TOKEN)
-- template: templates/azure_pact_record_deployment_with_params.yml@templates
+- template: templates/azure_pact_record_deployment.yml@pact_templates
   parameters:
     environment: production
     application_name: $(PACTICIPANT)
     token: $(PACT_BROKER_TOKEN)
   
-
-
-# - script: |
-#     docker run \
-#       --rm \
-#       -v ${PWD}:${PWD} \
-#       -e PACT_BROKER_BASE_URL \
-#       -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest \
-#       broker can-i-deploy \
-#         --pacticipant ${PACTICIPANT} \
-#         --version ${GIT_COMMIT} \
-#         --to-environment production
-#   displayName: 🎛  Can I deploy?
-#   env:
-#     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)
-
-# - script: |
-#     docker run \
-#       --rm \
-#       -v ${PWD}:${PWD} \
-#       -e PACT_BROKER_BASE_URL \
-#       -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest \
-#       broker record_deployment \
-#           --pacticipant ${PACTICIPANT} \
-#           --version ${GIT_COMMIT} \
-#           --environment production
-#   displayName: 🚀  Deploy
-#   env:
-#     PACT_BROKER_TOKEN: $(PACT_BROKER_TOKEN)

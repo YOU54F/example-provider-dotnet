@@ -12,17 +12,20 @@ parameters:
   type: string
   default: "Run tests"
 
+resources:
+  repositories:
+    - repository: pact_templates
+      type: github
+      name: you54f/azure-pipelines-templates
+      endpoint: azure-templates-pact-github # azure service connection to allow read-only access to github repo
+      # ref: refs/heads/templates # point to a commit / branch / tag
+
 variables:
   - name: PACTICIPANT
     value: "pactflow-example-provider-dotnet"
   - name: PACT_BROKER_BASE_URL
     value: https://testdemo.pactflow.io
-  - name: GIT_BRANCH
-    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
-  - name: GIT_COMMIT
-    value: $(Build.SourceVersion)
-  - name: BUILD_URI
-    value: '$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)'
+  - template: templates/azure_pact_variables.yml@pact_templates
 
 pool:
   vmImage: ubuntu-latest
