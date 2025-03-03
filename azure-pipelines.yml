@@ -45,6 +45,8 @@ steps:
     to_environment: production
     application_name: $(PACTICIPANT)
     token: $(PACT_BROKER_TOKEN)
+    retry_while_unknown: 5
+    retry_interval: 10
 - ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
   - template: templates/azure_pact_record_deployment.yml@pact_templates
     parameters:
